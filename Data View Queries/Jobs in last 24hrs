@@ -1,0 +1,7 @@
+SELECT JobID, EmailID, AccountID, AccountUserID, FromName, 
+FromEmail, SchedTime, PickupTime, DeliveredTime, EventID, 
+IsMultipart, JobType, JobStatus, ModifiedBy, ModifiedDate, EmailName,
+EmailSubject, IsWrapped, TestEmailAddr, Category, SendType, 
+SendClassification, EmailSendDefinition, TriggererSendDefinitionObjectID, TriggeredSendCustomerKey
+FROM [_Job]
+WHERE CreatedDate >= DATEADD(day, -1, GETDATE())
