@@ -1,0 +1,4 @@
+SELECT [Customer Email] AS Email,Count([Customer Email]) as Num_of_Orders, Created as OrderDate
+FROM [ShopifyOrdersDE-morphe-inc]
+GROUP BY [Customer Email], Created
+HAVING Count([Customer Email]) = 1 and  Created >= DATEADD(day, -1, GETDATE()) and CAST( Created AS Date ) < CAST(GETDATE() AS DATE)
