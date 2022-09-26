@@ -1,0 +1,7 @@
+SELECT EMAIL as Email, [First Name] as FirstName, [Last Name] as LastName
+FROM [ShopifyCustomersDE-morphe-inc]
+
+UNION
+
+SELECT  EmailAddress as Email, [FirstName], [LastName]
+FROM [BounceX_Signup]
