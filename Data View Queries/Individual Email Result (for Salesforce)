@@ -1,0 +1,40 @@
+SELECT 
+s.SendID,
+su.Status as SubscriberStatus,
+s.SubscriberKey,
+su.EmailAddress,
+s.SubscriberID,
+s.ListID,
+s.EventDate as SendDate,
+s.BatchID,
+s.TriggeredSendExternalKey,
+sj.FromName, 
+sj.FromEmail,
+sj.SentTime,
+sj.Subject, 
+sj.EmailName,
+sj.JobStatus, 
+sj.PreviewURL,
+sj.SendDefinitionExternalKey
+FROM [Sends] s
+LEFT JOIN [SendJobs] sj ON s.SendID = sj.SendID
+LEFT JOIN [_Subscribers] su ON su.SubscriberKey = s.SubscriberKey  
+LEFT JOIN [Opens] o ON o.SubscriberKey = s.SubscriberKey and o.JobID =s.SendID
+LEFT JOIN [Clicks] c ON c.SubscriberKey = s.SubscriberKey and c.JobID =s.SendID
+LEFT JOIN (
+SELECT SendID, Count(SendID) as NotSent, SubscriberKey
+FROM [NotSent]
+GROUP  BY SendID, SubscriberKey
+) ns ON ns.SubscriberKey = s.SubscriberKey and  ns.SendID =s.SendID
+LEFT JOIN (
+SELECT JobId, Count(JobId) as Bounced
+FROM [_Bounce]
+GROUP  BY JobId) b ON b.JobID =s.SendID
+LEFT JOIN (
+SELECT JobId, Count(JobId) as Clicked
+FROM [_Click]
+GROUP  BY JobId) cd ON cd.JobID =s.SendID
+LEFT JOIN (
+SELECT JobId, Count(JobId) as Opened
+FROM [_Click]
+GROUP  BY JobId) op ON op.JobID =s.SendID
