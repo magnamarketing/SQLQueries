@@ -1,0 +1,18 @@
+This allows you to validate whether an email is actually a valid email or not.
+
+
+
+SELECT subscriberkey 
+FROM  [Not Email] 
+WHERE subscriberkey NOT LIKE '_%@_%._%'
+
+
+
+You can also use:
+
+SELECT subscriberkey 
+FROM  [Not Email] 
+WHERE subscriberkey NOT LIKE '_%@_%._%' AND PATINDEX('%[^a-z,0-9,@,.,_]%', REPLACE(subscriberkey, '-', 'a')) = 0
+
+
+
