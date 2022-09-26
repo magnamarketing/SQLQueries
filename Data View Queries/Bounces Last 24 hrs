@@ -1,0 +1,5 @@
+SELECT JobID, ListID, BatchID, SubscriberID, SubscriberKey, EventDate, Domain,
+IsUnique, BounceCategory, BounceSubcategory, BounceType, 
+SMTPBounceReason, SMTPMessage, TriggererSendDefinitionObjectID, TriggeredSendCustomerKey
+FROM [_BOUNCE]
+WHERE EventDate >= DATEADD(day, -1, GETDATE())
