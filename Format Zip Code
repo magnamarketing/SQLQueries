@@ -1,0 +1,5 @@
+SELECT orderid, 
+IIF(len(shipping_postal_code)<5, RIGHT( '00000' + LTRIM( RTRIM(shipping_postal_code ) ), 5 ), shipping_postal_code) as shipping_postal_code,
+IIF(len(billing_postal_code)<5, RIGHT( '00000' + LTRIM( RTRIM(billing_postal_code ) ), 5 ), billing_postal_code) as billing_postal_code
+FROM SFCC_ORDERS_v2
+WHERE len(shipping_postal_code)<5 OR len(billing_postal_code)<5
