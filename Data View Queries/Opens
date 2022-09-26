@@ -1,0 +1,10 @@
+SELECT subscriberkey,
+subscriberid,
+jobid, 
+listid, 
+batchid,
+eventdate, 
+isunique, 
+triggeredsendcustomerkey, 
+triggerersenddefinitionobjectid
+FROM [_OPEN]
