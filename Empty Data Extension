@@ -1,0 +1,6 @@
+// set data action to overwrite. Mainly for allowing data to be deleted from Data extension periodically
+
+SELECT null as school_key,
+null as game_key,
+null as time_zone
+WHERE 1 = 0
