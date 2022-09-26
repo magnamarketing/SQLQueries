@@ -1,0 +1,43 @@
+SELECT id, [attribute:timeZone], 
+[location:city], 
+[location:state], 
+[dimension:Sport],
+[dimension:Gender],
+[dimension:Level], 
+[attribute:homeTeam],
+[attribute:awayTeams],
+CASE 
+WHEN [attribute:homeTeamshortName] = 'TEAM TBD'  THEN 'False' 
+WHEN [attribute:awayTeamshortName] = 'TEAM TBD'  THEN 'False' 
+WHEN [dimension:Sport] = '' THEN 'False'
+WHEN [dimension:Gender] = '' THEN 'False'
+WHEN [dimension:Level] = '' THEN 'False'
+WHEN [attribute:homeTeamLogo] = '' THEN 'False'
+WHEN [attribute:awayTeamLogo] = '' THEN 'False'
+WHEN [attribute:name] = '' THEN 'False'
+WHEN [attribute:imageUrl] = '' THEN 'False'
+WHEN [dimension:State] = '' THEN 'False'
+else 'True'
+END AS [attribute:promotable], 
+[attribute:imageUrl],
+[dimension:State],
+[attribute:localStartTime], 
+[attribute:status], 
+[attribute:url], 
+[attribute:isPostSeason], 
+[attribute:homeTeamshortName], 
+[attribute:awayTeamshortName], 
+[attribute:startTime], [attribute:homeTeamLogo], [attribute:awayTeamLogo], [location:longitude], 
+[location:latitude], [attribute:name], [attribute:price], [attribute:expiration]
+FROM [GamesParsed_IS_Reformatted]
+WHERE [attribute:startTime]>= GETDATE() and  [attribute:promotable] in (select [attribute:promotable]
+from [GamesParsed_IS_Reformatted] where [attribute:promotable] ='True') and [attribute:promotable] = 1
+AND [attribute:homeTeamshortName] != 'TEAM TBD' AND
+[attribute:awayTeamshortName] != 'TEAM TBD' AND [dimension:Sport] != '' AND
+[dimension:Gender] != '' AND
+[dimension:Level] != '' AND
+[attribute:homeTeamLogo] != '' AND
+[attribute:awayTeamLogo] != '' AND
+[attribute:name] != '' AND
+[attribute:imageUrl] != '' AND
+[dimension:State] != '' 
