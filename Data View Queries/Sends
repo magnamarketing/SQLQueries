@@ -1,0 +1,8 @@
+SELECT JobID AS SendID, 
+SubscriberKey,
+SubscriberID, 
+ListID,
+EventDate, 
+BatchID, 
+TriggeredSendCustomerKey AS TriggeredSendExternalKey
+FROM [_SENT]
