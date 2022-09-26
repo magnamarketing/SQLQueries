@@ -1,0 +1,92 @@
+SELECT g.[key] AS [id],
+CONCAT(g.[homeTeam_shortName], ' ', 'vs',' ',g.[awayTeams_shortName],' ', g.[gender], ' ',g.[level], ' ', g.[sport]) as [attribute:name],
+g.away_teams AS [attribute:awayTeams],
+g.home_team  AS [attribute:homeTeam], 
+FORMAT(dateadd(hour,1 , g.start_time) , 'yyyy-MM-ddTHH:mm:ssZ') AS [attribute:expiration],
+100 as [attribute:price],
+100 as [attribute:listPrice],
+100 as [attribute:inventoryCount],
+CASE
+WHEN g.away_teams ='' THEN 'TEAM TBD'
+WHEN g.away_teams IS NOT NULL THEN g.awayTeams_shortName  END AS [attribute:awayTeamshortName],
+CASE
+WHEN g.home_team ='' THEN 'TEAM TBD'
+WHEN g.home_team IS NOT NULL THEN g.homeTeam_shortName END AS [attribute:homeTeamshortName],
+MAX(CASE
+    WHEN t.team_key = g.away_teams THEN t.logo
+END) AS [attribute:awayTeamLogo],
+MAX(CASE
+    WHEN t.team_key = g.home_team THEN t.logo
+END) AS [attribute:homeTeamLogo],
+MAX(CASE
+    WHEN t.team_key = g.home_team THEN t.longitude
+END) AS [location:longitude],
+MAX(CASE
+    WHEN t.team_key = g.home_team THEN t.latitude
+END) AS [location:latitude],
+CASE 
+WHEN CHARINDEX(',', g.away_teams) > 0 THEN 'False' 
+WHEN g.is_deleted ='False' THEN 'True' 
+WHEN g.is_deleted ='True' THEN 'False'
+END AS [attribute:promotable],
+REPLACE(CONCAT(g.home_team,'|',g.away_teams ),',','|') as [dimension:School],
+FORMAT(g.start_time , 'MMM d yyyy hh:mmtt') AS [attribute:startTime],
+g.time_zone AS [attribute:timeZone], 
+g.city AS [location:city],
+g.state_code AS [location:state], 
+g.sport AS [dimension:Sport], 
+g.game_type AS [attribute:gameType], 
+g.gender AS [dimension:Gender], 
+g.level AS [dimension:Level], 
+g.is_tournament AS [attribute:isTournament],
+MAX(CASE 
+WHEN t.team_key = g.home_team AND g.share_image IS NULL THEN t.logo
+WHEN g.share_image IS NOT NULL THEN g.share_image 
+END) AS [attribute:imageUrl], 
+g.state_name AS [dimension:State], 
+g.content_type AS [attribute:contentType], 
+FORMAT(convert(date,g.local_start_time) , 'yyyy-MM-ddTHH:mm:ssZ') AS [attribute:localStartTime], 
+g.home_participant  AS [attribute:homeParticipant], 
+g.status  AS [attribute:status], 
+g.payment_required  AS [attribute:paymentRequired],
+g.site_url  AS [attribute:url], 
+g.is_postseason  AS [attribute:isPostSeason],
+g.track_wrestling AS [attribute:trackWrestling]
+FROM [GamesParsed] g
+INNER JOIN [GamesTeamsParsed] t  ON g.[key] = t.[game_key]
+where g.start_time >= GETDATE()
+GROUP BY g.[key],
+g.away_teams ,
+g.home_team , g.start_time ,
+g.time_zone , 
+g.city,
+g.state_code, 
+g.sport, 
+g.game_type, 
+g.gender, 
+g.level , 
+g.classification , 
+g.class_label ,
+g.is_sport ,
+g.has_broadcast , 
+g.is_pixellot,
+g.is_deleted, 
+g.revenue_share , 
+g.is_tournament ,
+g.home_score , 
+g.away_score, 
+g.share_image , 
+g.score, 
+g.priority, 
+g.state_name, 
+g.content_type , 
+g.local_start_time , 
+g.home_participant , 
+g.status, 
+g.payment_required ,
+g.is_testing , 
+g.site_url, 
+g.is_postseason,
+g.track_wrestling,
+g.awayTeams_shortName,
+g.homeTeam_shortName
