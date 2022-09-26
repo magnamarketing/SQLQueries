@@ -1,0 +1,11 @@
+SELECT SubscriberKey, 
+SubscriberID, 
+JobID, 
+ListID, 
+BatchID, 
+EventDate, 
+IsUnique, 
+URL, 
+LinkName, 
+LinkContent
+FROM [_CLICK]
