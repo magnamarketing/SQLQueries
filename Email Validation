@@ -1,6 +1,7 @@
 This allows you to validate whether an email is actually a valid email or not.
 
 
+This is the simplest query which will check if the email address follow this structure <email-address>@<domain>.<com-or-other-end>:
 
 SELECT subscriberkey 
 FROM  [Not Email] 
@@ -8,11 +9,13 @@ WHERE subscriberkey NOT LIKE '_%@_%._%'
 
 
 
-You can also use:
+This will check for the structure and if there are any special characters in the email addresses:
 
 SELECT subscriberkey 
 FROM  [Not Email] 
 WHERE subscriberkey NOT LIKE '_%@_%._%' AND PATINDEX('%[^a-z,0-9,@,.,_]%', REPLACE(subscriberkey, '-', 'a')) = 0
 
 
+This will check for the structure and the position of special characters as well as their occurences. It also trim the trailing spaces:
 
+SELECT subscriberkey FROM [Not Email] WHERE LTRIM(LEFT(subscriberkey, 1)) LIKE '[^A-Za-z0-9]' OR LTRIM(subscriberkey) LIKE '%[^A-Za-z0-9][^A-Za-z0-9]%' OR LTRIM(subscriberkey) NOT LIKE '%@_%.__%'
